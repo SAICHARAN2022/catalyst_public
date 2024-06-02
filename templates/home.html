@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Upload Form</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#" style="font-weight: bold;">Upload Data</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'query_build' %}" style="font-weight: bold;">Query Builder</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'user_list' %}" style="font-weight: bold;">Users</a>
+        </li>
+      </ul>
+    
+        <form class="form-inline my-2 my-lg-0" id="logoutForm" action="{% url 'logout' %}" method="post">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="font-weight: bold;">Logout</button>
+        </form>
+        
+        <script>
+            document.getElementById('logoutForm').addEventListener('submit', function(event) {
+                event.preventDefault();  // Prevent form submission
+                // Perform AJAX request or redirect to logout URL
+                fetch('logout/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token
+                    }
+                }).then(response => {
+                    // Handle response or redirect to logout page
+                    window.location.href = '/';  // Redirect to logout page
+                }).catch(error => {
+                    console.error('Error:', error);
+                    // Handle error
+                });
+            });
+        </script>
+
+           
+    </div>
+  </nav>
+
+    <!-- <div class="container mt-5">
+        <h2>Upload Data</h2>
+        <form method="post" enctype="multipart/form-data">
+        <div class="custom-file">
+            {% csrf_token %}
+            <input type="file" class="custom-file-input" name="fileUpload" id="fileInput">
+            <label class="custom-file-label" for="customFile">Select file</label>
+        </div>
+        <button onclick="uploadFile()" class="btn btn-primary mt-2">Upload</button>
+        </form>
+        <div class="progress mt-3">
+            <div id="uploadProgress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+        </div>
+        <p id="uploadStatus" class="mt-2"></p>
+    </div> -->
+    
+    
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-9">
+                <h2>Upload File</h2>
+                <input type="file" id="fileInput" class="form-control">
+                <button onclick="uploadFile()" class="btn btn-primary mt-2">Upload</button>
+                <div class="progress mt-3">
+                    <div id="uploadProgress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                </div>
+                <p id="uploadStatus" class="mt-2"></p>
+            </div>
+        </div>
+    </div>
+
+        <script>
+            // Function to handle file upload
+            // async function uploadFile(file) {
+            //     alert('system');
+            //     const chunkSize = 1024 * 1024; // 1MB
+            //     const totalChunks = Math.ceil(file.size / chunkSize);
+            //     let chunkNumber = 1;
+
+            //     try {
+            //         for (let start = 0; start < file.size; start += chunkSize) {
+            //             const chunk = file.slice(start, start + chunkSize);
+            //             await uploadChunk(chunk, file.name, totalChunks, chunkNumber);
+            //             chunkNumber++;
+            //         }
+            //         console.log('File upload complete');
+            //     } catch (error) {
+            //         console.error('Error uploading file:', error);
+            //     }
+            // }
+
+            // Function to upload a chunk using Fetch API with CSRF token
+            // async function uploadChunk(chunk, filename, totalChunks, chunkNumber) {
+            //     alert('system');
+            //     const formData = new FormData();
+            //     formData.append('file', chunk);
+            //     formData.append('filename', filename);
+            //     formData.append('total_chunks', totalChunks);
+            //     formData.append('chunk_number', chunkNumber);
+
+            //     const response = await fetch('/upload-chunk/', {
+            //         method: 'POST',
+            //         headers: {
+            //             'X-CSRFToken': getCSRFToken()  // Include CSRF token in headers
+            //         },
+            //         body: formData
+            //     });
+
+            //     if (!response.ok) {
+            //         throw new Error(`Failed to upload chunk ${chunkNumber}`);
+            //     }
+
+            //     return await response.json();
+            // }
+            
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+            const csrftoken = getCookie('csrftoken');
+
+
+            async function uploadFile() {
+                const fileInput = document.getElementById('fileInput');
+                const file = fileInput.files[0];
+                const chunkSize = 1024 * 1024; // 1MB
+                const totalChunks = Math.ceil(file.size / chunkSize);
+                let chunkNumber = 1;
+
+                for (let start = 0; start < file.size; start += chunkSize) {
+                    const chunk = file.slice(start, start + chunkSize);
+                    // alert(chunkNumber);
+                    const formData = new FormData();
+                    formData.append('file', chunk);
+                    formData.append('filename', file.name);
+                    formData.append('total_chunks', totalChunks);
+                    formData.append('chunk_number', chunkNumber);
+
+                    await fetch('/upload-chunk/', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': csrftoken,
+                            'Content-Disposition': `attachment; filename="${file.name}"`
+                        }
+                    }).then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                        const progress = Math.round((chunkNumber / totalChunks) * 100);
+                        const progressBar = document.getElementById('uploadProgress');
+                        progressBar.style.width = progress + '%';
+                        progressBar.setAttribute('aria-valuenow', progress);
+                        progressBar.textContent = progress + '%';
+                        document.getElementById('uploadStatus').textContent = `Uploading... ${progress}%`;
+                    }).catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                    chunkNumber++;
+                }
+                document.getElementById('uploadStatus').textContent = 'Upload complete!';
+            }
+        </script>
+    
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Form Example</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Add custom styles here if needed */
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'upload' %}" style="font-weight: bold;">Upload Data</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="" style="font-weight: bold;">Query Builder</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'user_list' %}" style="font-weight: bold;">Users</a>
+            </li>
+          </ul>
+        </div>
+        <form class="form-inline my-2 my-lg-0" id="logoutForm" action="{% url 'logout' %}" method="post">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="font-weight: bold;">Logout</button>
+        </form>
+      </nav>
+
+
+    <div class="container mt-5">
+        <h2 class="card-header">Query Builder</h2>
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" placeholder="Keyword">
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="" class="form-control"placeholder="Industry">
+                </div>
+                <div class="form-group col-md-4">
+                    <input type="text" class="form-control" placeholder="Year Founded">
+                </div>
+                <div class="form-group col-md-4">
+                    <select class="custom-select" id="citySelect">
+                        <option selected disabled>city</option>
+                        <option value="newyork">New York</option>
+                        <option value="losangeles">Los Angeles</option>
+                        <option value="chicago">Chicago</option>
+                        <option value="houston">Houston</option>
+                        <option value="miami">Miami</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <select class="custom-select" id="stateselect">
+                        <option selected disabled>state</option>
+                        <option value="newyork">New York</option>
+                        <option value="losangeles">Los Angeles</option>
+                        <option value="chicago">Chicago</option>
+                        <option value="houston">Houston</option>
+                        <option value="miami">Miami</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <!-- <input type="text" class="form-control" placeholder="Country"> -->
+                    <select class="custom-select" id="countryselect">
+                        <option selected disabled>Country</option>
+                        <option value="newyork">New York</option>
+                        <option value="losangeles">Los Angeles</option>
+                        <option value="chicago">Chicago</option>
+                        <option value="houston">Houston</option>
+                        <option value="miami">Miami</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <!-- <input type="text" class="form-control" placeholder="Employees (From)"> -->
+                    <select class="custom-select" id="Employeesfrom">
+                        <option selected disabled>Employees(From)</option>
+                        <option value="newyork">New York</option>
+                        <option value="losangeles">Los Angeles</option>
+                        <option value="chicago">Chicago</option>
+                        <option value="houston">Houston</option>
+                        <option value="miami">Miami</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <!-- <input type="text" class="form-control" placeholder="Employees To"> -->
+                    <select class="custom-select" id="Employeesfrom">
+                        <option selected disabled>Employees To</option>
+                        <option value="newyork">New York</option>
+                        <option value="losangeles">Los Angeles</option>
+                        <option value="chicago">Chicago</option>
+                        <option value="houston">Houston</option>
+                        <option value="miami">Miami</option>
+                    </select>
+                </div>
+            </div>
+            <div class="container mt-3">
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-primary mr-2">Query Date</button>
+                    <button type="submit" class="btn btn-gray" style="background-color: rgb(200,200,200);">Reset</button>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
